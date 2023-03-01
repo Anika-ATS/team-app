@@ -13,14 +13,52 @@ import {SignUp} from "./components/SignUp";
 
 import './App.css';
 import { Navigation } from "./components/Navigation";
+import { Footer } from "./components/Footer";
+// import {
+//   Chart as ChartJS,
+//   CategoryScale, //y-axis
+//   LinearScale, //x -axis
+//   PointElement,
+//   LineElement,
+//   Title,
+//   Tooltip,
+//   Legend,
+// } from "chart.js";
+
+// import { Line } from "react-chartjs-2";
+// ChartJS.register(
+//   CategoryScale,
+//   LinearScale,
+//   LineElement,
+//   PointElement,
+//   Title,
+//   Tooltip,
+//   Legend
+// );
+
+
 
 function App() {
+  // const state = {
+  //   labels: ["January", "February", "March", "April", "May"],
+  //   datasets: [
+  //     {
+  //       label: "Rainfall",
+  //       fill: false,
+  //       lineTension: 0.5,
+  //       backgroundColor: "rgba(75,192,192,1)",
+  //       borderColor: "rgba(0,0,0,1)",
+  //       borderWidth: 2,
+  //       data: [65, 59, 80, 81, 56],
+  //     },
+  //   ],
+  // };
   return (
     <>
-      <Router>
+       <Router>
        <Navigation/>
       <main>
-      <Routes>
+       <Routes>
           <Route path="/" element={<Home/>} />
 
           
@@ -31,9 +69,26 @@ function App() {
           <Route path="/Login" element={<Login/> } /> 
           <Route path="/SignUp" element={<SignUp/> } /> 
           
-        </Routes>
+        </Routes> 
       </main>
-    </Router>  
+
+      <Footer/>
+
+    </Router>   
+    {/* <Line
+        data={state}
+        options={{
+          title: {
+            display: true,
+            text: "Average Rainfall per month",
+            fontSize: 20,
+          },
+          legend: {
+            display: true,
+            position: "right",
+          },
+        }}
+      /> */}
     </>
   );
 }
