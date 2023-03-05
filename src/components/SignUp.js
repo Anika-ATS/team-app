@@ -1,30 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 
 import regi from '../img/regi2.png';
+import signupValidation from "./validators/signupValidation";
 
 
 
 export const SignUp = () => {
-    const[Name,setName]=useState("");
-    const[email,setEmail]=useState("");
-    const[password,setPassword]=useState("");
-    const[ConPassword,setConPassword]=useState("");
-    const[phone,setPhoneNumber]=useState("");
-    // const[age,setAge]=useState("");
-    // const[Weight,setWeight]=useState("");
-    const[Height,setHeight]=useState("");
-    
 
+    
+    const [values, setValues] = useState({
+      name: "",
+      email: "",
+      password: "",
+      ConPassword: "",
+      phone: "",
+      Height: "",
+      //isloggedIn: false
+  
+  });
+
+
+    // const[Name,setName]=useState("");
+    // const[email,setEmail]=useState("");
+    // const[password,setPassword]=useState("");
+    // const[ConPassword,setConPassword]=useState("");
+    // const[phone,setPhoneNumber]=useState("");    
+    // const[Height,setHeight]=useState("");
+    const[errors, setErrors] = useState({});
+
+    
+  ///error handler
+  useEffect(()=>{
+    const errorHandler=async()=>{
+      // setErrors(signupValidation(Name, email, password, ConPassword, phone, Height))
+      
+      setErrors(signupValidation(values))
+      
+    };
+    errorHandler();
+  },
+  // [Name,email,password,phone,Height,ConPassword]
+  [values])
 
 
     // store email and password
-    const[allEntry, setAllEntry]=useState([]);
-    const submitForm=(e)=>{
-        e.preventDefault(e);
-        const newEntry={email:email,password:password};
-        setAllEntry([...allEntry,newEntry]);
+  const submitForm=(e)=>{
+    e.preventDefault(e);
+    if(Object.keys(errors).length === 0){
+      
+      alert("Account created successfully!");
+      
+    }else{
+      alert("Please enter valid informations.");
     }
+      
+  }
+   //input field handler
+   const changeHandler =(e)=>{
+    let dataUpdated={
+        ...values,
+        [e.target.name]: e.target.value,
+        
+    };
+  // console.log(values.department);
+  setValues(dataUpdated);
+  // setTouched(true);
+}
+
+
   return (
     <>
     <p className='font-bold text-2xl p-5  text-center'> Please <span className='italic text-purple-600 '>Sign Up</span> First </p>
@@ -32,62 +76,59 @@ export const SignUp = () => {
      <div className=" bg-gray-100 flex w-3/4 mt-0 rounded-2xl shadow-lg max-w-screen p-5 justify-between ">
       <div className="w-1/2 px-16  ">
 
+    {/* Registration form */}
      <form className="flex flex-col gap-4 " action="" onSubmit={submitForm}>
         {/* Name */}
         <label className="font-bold text-zinc-600" for="exampleInputEmail1" class="form-label">Name: </label>
 
-        <input className=" p-5 mt-1 rounded-xl border " type="text" class="form-control" id="name"  placeholder="Your Name" value={Name}
-        onChange={(e)=>setName(e.target.value)}
+        <input className=" p-5 mt-1 rounded-xl border " type="text" class="form-control" id="name"  placeholder="Your Name" name={values.name}  onChange={changeHandler}
+        // value={values.name} onChange={(e)=>setName(e.target.value)
+        // }
         />
-
+        {errors.name && <span className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">{errors.name}</span>}
 
 
         {/* email */}
         <label className="font-bold text-zinc-600 " for="exampleInputEmail1" class="form-label">Email: </label>
-        <input className=" p-5 mt-1 rounded-xl border " type="email" class="form-control" id="email"  placeholder=" Email" value={email}
-        onChange={(e)=>setEmail(e.target.value)}
+        <input className=" p-5 mt-1 rounded-xl border " type="email" class="form-control" id="email"  placeholder=" Email" name={values.email}  onChange={changeHandler}
+        // value={values.email} onChange={(e)=>setEmail(e.target.value)}
         
         />
+        {errors.email && <span className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">{errors.email}</span>}
         {/* Password */}
         <label className="font-bold text-zinc-600"  class="form-label">Password: </label>
 
-        <input className="mx-px p-3 mt-1  rounded-xl border " type="password" class="form-control" id="password" placeholder=" Password" value={password}
-        onChange={(e)=>setPassword(e.target.value)}
+        <input className="mx-px p-3 mt-1  rounded-xl border " type="password" class="form-control" id="password" placeholder=" Password" name={values.password}  onChange={changeHandler}
+        // value={values.password} onChange={(e)=>setPassword(e.target.value)}
         />
+        {errors.password && <span className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">{errors.password}</span>}
         {/*Confirm Password */}
+
         <label className="font-bold text-zinc-600 "  class="form-label">Confirm Password: </label>
-        <input className="mx-px p-3 mt-1  rounded-xl border " type="password" class="form-control" id="Conpassword" placeholder="Confirm Password" value={ConPassword}
-        onChange={(e)=>setConPassword(e.target.value)}
+        <input className="mx-px p-3 mt-1  rounded-xl border " type="password" class="form-control" id="Conpassword" placeholder="Confirm Password" name={values.ConPassword}  onChange={changeHandler}
+        // value={values.ConPassword} onChange={(e)=>setConPassword(e.target.value)}
         />
+        {errors.confirmPassword && <span className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">{errors.confirmPassword}</span>}
         {/* phone number */}
         
         <label className="font-bold text-zinc-600 "  class="form-label">Phone Number: </label>
-        <input className="mx-px p-3 mt-1  rounded-xl border " type="text" class="form-control" id="Phone" placeholder="Mobile Number" value={phone}
-        onChange={(e)=>setPhoneNumber(e.target.value)}
-        />
-
-        {/*Age */}
-{/*         
-        <label className="font-bold "  class="form-label">Age: </label>
-        <input className="mx-px p-3 mt-1  rounded-xl border " type="text" class="form-control" id="age" placeholder="Age" value={age}
-        onChange={(e)=>setAge(e.target.value)}
-        /> */}
-        {/* Weight */}
+        <input className="mx-px p-3 mt-1  rounded-xl border " type="text" class="form-control" id="Phone" placeholder="Mobile Number" name={values.phone}  onChange={changeHandler}
         
-        {/* <label className="font-bold "  class="form-label">Weight: </label>
-        <input className="mx-px p-3 mt-1  rounded-xl border " type="text" class="form-control" id="Weight" placeholder="Weight" value={Weight}
-        onChange={(e)=>setWeight(e.target.value)} 
-        />*/}
-        {/* Height */}
+        // value={values.phone} onChange={(e)=>setPhoneNumber(e.target.value)}
+        />
+        {errors.mobile && <span className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">{errors.mobile}</span>}
+
         
         <label className="font-bold text-zinc-600 "  class="form-label">Height: </label>
-        <input className="mx-px p-3 mt-1  rounded-xl border " type="text" class="form-control" id="Height" placeholder="Height" value={Height}
-        onChange={(e)=>setHeight(e.target.value)}
+        <input className="mx-px p-3 mt-1  rounded-xl border " type="text" class="form-control" id="Height" placeholder="Height"  name={values.Height}  onChange={changeHandler}
+        
+        // value={values.Height} onChange={(e)=>setHeight(e.target.value)}
         />
+        {errors.height && <span className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">{errors.height}</span>}
 
       
       
-      <button className="py-2 mt-3  rounded-xl border bg-gradient-to-r from-purple-300 to-purple-600 text-white   hover:bg-violet-200 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300 " type="submit" >SignUp</button>
+      <button className="py-2 mt-3  rounded-xl border bg-gradient-to-r from-purple-300 to-purple-600 text-white    active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300 " type="submit" >SignUp</button>
      </form>
      <p className="font-bold text-xl p-2"> Allready Have An Account ? <br/>Let's  
      <Link to="/Login"><span className="text-purple-600 italic"> Register!!</span></Link></p>
